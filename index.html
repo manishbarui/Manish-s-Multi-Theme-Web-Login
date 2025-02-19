@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@Manish's Theme-Web-Login'</title>
+  
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  
+  <style>
+    body {
+      overflow-x: hidden;
+      font-family: "Roboto Slab", Arial, sans-serif;
+      background-color: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      transition: background 0.5s ease;
+    }
+
+    body.day {
+      background: #fff;
+    }
+  
+  /* Popup Bounce Animation */
+    @keyframes popupBounceIn {
+      0% {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.05);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes popupBounceOut {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+    }
+
+    .popup-content {
+      animation: popupBounceIn 0.3s ease-out;
+    }
+
+    .popup.hide {
+      animation: popupBounceOut 0.3s ease-out forwards;
+    }
+
+    /* Popup Modal Styles */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+      background: linear-gradient(180deg, transparent, #00fffc);
+      margin: 15% auto;
+      padding: 20px;
+      border: 2px solid #625d5d;
+      width: 300px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      text-align: center;
+      color: #fff;
+    }
+
+    /* Day/Night Toggle */
+    .dayNight {
+      cursor: pointer;
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .dayNight input {
+      display: none;
+    }
+
+    .dayNight div {
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      position: relative;
+      box-shadow: inset 16px -16px 0 0 #fff;
+      transition: box-shadow 0.5s, transform 0.4s;
+    }
+
+    .dayNight div::before {
+      content: "";
+      width: inherit;
+      height: inherit;
+      border-radius: inherit;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: transparent;
+      transition: background 0.3s;
+    }
+
+    .dayNight div::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      box-shadow: 0 -23px 0 #ffff00, 0 23px 0 #ffff00,
+        23px 0 0 #ffff00, -23px 0 0 #ffff00, 
+        15px 15px 0 #ffff00, -15px 15px 0 #ffff00,
+        15px -15px 0 #ffff00, -15px -15px 0 #ffff00;
+      transform: scale(0);
+      transition: all 0.3s;
+    }
+
+    .dayNight input:checked + div {
+      box-shadow: inset 32px -32px 0 0 #fff;
+      transform: scale(0.5);
+    }
+
+    .dayNight input:checked + div::before {
+      background: #ffff00;
+    }
+
+    .dayNight input:checked + div::after {
+      transform: scale(1.5);
+    }
+
+    /* Login Form */
+    .box {
+      width: 400px;
+      height: 459px;
+      border: 2px solid #625d5d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      background: linear-gradient(180deg, transparent, #00fffc);
+      transition: background 0.5s;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      color: #fff;
+      text-align: center;
+    }
+
+    .inputbox {
+      position: relative;
+      margin: 40px 0;
+      width: 300px;
+      border-bottom: 2px solid #fff;
+    }
+
+    .inputbox label {
+      position: absolute;
+      top: 30%;
+      left: 5px;
+      transform: translateY(-50%);
+      color: #fff;
+      font-size: 1em;
+      pointer-events: none;
+      transition: 0.5s;
+    }
+
+    .inputbox input {
+      width: 100%;
+      height: 45px;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-size: 1em;
+      padding: 0 35px 0 5px;
+      color: #fff; /* White text for dark theke */
+    }
+ 
+    body.day .inputbox input {
+      color: #000; /* Black text for light theme */
+    }
+  
+   .inputbox input:focus ~ label,
+   .inputbox input:not(:placeholder-shown) ~ label {
+     top: -5px;
+     color: #00fffc;
+    }
+
+    /* Password Eye Icon */
+    .inputbox .eye-icon {
+      font-size: 1.3em;
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      scale(1.4);
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    /* Eye Icon Click Animation */
+    @keyframes bounce {
+      0% { transform: translateY(-50%) scale(1.4); }
+      50% { transform: translateY(-65%) scale(1.6); }
+      100% { transform: translateY(-50%) scale(1.4); }
+    }
+
+    button {
+      width: 100%;
+      height: 45px;
+      border-radius: 25px;
+      background-color: #e6e2e2;
+      border: none;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+
+    .forget, .register {
+      font-size: 0.9em;
+      color: #fff;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    .register a {
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    /* Light Mode */
+    body.day .box {
+      border: 2px solid #000;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    body.day .inputbox {
+      border-bottom: 2px solid #000;
+    }
+
+    body.day h2,
+    body.day .inputbox label,
+    body.day .forget,
+    body.day .register {
+      color: #000;
+    }
+
+    body.day .register a {
+      color: #000;
+    }
+
+    body.day .eye-icon {
+      color: #000;
+    }
+
+    /* Social Links */
+    .meta-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 7px 7px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, rgba(248, 249, 250, 0.2), rgba(214, 216, 219, 0.2), rgba(191, 197, 201, 0.2));
+  backdrop-filter: blur(10px); /* Adds a subtle frosted effect */
+  text-decoration: none;
+  color: brown;
+  transition: background 0.6s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meta-link:hover {
+  background: linear-gradient(135deg, rgba(248, 249, 250, 0.3), rgba(214, 216, 219, 0.3), rgba(191, 197, 201, 0.3));
+  transform: scale(1.05);
+}
+  </style>
+</head>
+<body>
+
+  <label class="dayNight">
+    <input type="checkbox" id="theme-toggle">
+    <div></div>
+  </label>
+
+  <div class="box">
+    <form id="loginForm">
+      <h2>Login Here</h2>
+      <div class="inputbox">
+        <input type="email" id="email" required placeholder=" ">
+        <label>Email:</label>
+      </div>
+
+      <div class="inputbox">
+        <input type="password" id="password" required placeholder=" ">
+        <label>Password:</label>
+        <i class="fas fa-eye eye-icon" id="toggle-password"></i>
+      </div>
+
+      <div class="forget">
+        <label><input type="checkbox"> Remember me</label>
+        <a href="#">Forget Password?</a>
+      </div>
+
+      <button>Log In</button>
+
+      <div class="register">
+        <p>Don't have an account? <a href="#">Register</a></p>
+      </div>
+    </form>
+  </div>
+  
+  <!-- Popup Modal for Forget Password -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <p id="popup-text"></p>
+    </div>
+  </div>
+
+  <a class="meta-link" href="https://t.me/manish_barui" target="_blank">Join Telegram</a>
+
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const themeToggle = document.getElementById("theme-toggle");
+  const passwordInput = document.getElementById("password");
+  const togglePassword = document.getElementById("toggle-password");
+  const forgetPasswordLink = document.querySelector(".forget a");
+  const popup = document.getElementById("popup");
+  const popupText = document.getElementById("popup-text");
+  const closeBtn = document.querySelector(".popup .close");
+  const form = document.getElementById("loginForm");
+  const registerLink = document.querySelector(".register a");
+  const loginButton = form.querySelector("button");
+  let isRegisterMode = false;
+
+  if (localStorage.getItem("theme") === "day") {
+    document.body.classList.add("day");
+    themeToggle.checked = true;
+  }
+
+  themeToggle.addEventListener("change", () => {
+    document.body.classList.toggle("day");
+    localStorage.setItem("theme", document.body.classList.contains("day") ? "day" : "night");
+  });
+
+  togglePassword.addEventListener("click", () => {
+    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+    togglePassword.classList.toggle("fa-eye-slash");
+    togglePassword.style.animation = "bounce 0.3s";
+    setTimeout(() => { togglePassword.style.animation = ""; }, 300);
+  });
+
+  function showPopup(message) {
+    popupText.innerText = message;
+    popup.classList.remove("hide");
+    popup.style.display = "block";
+  }
+
+  function hidePopup() {
+    popup.classList.add("hide");
+    setTimeout(() => {
+      popup.style.display = "none";
+    }, 300);
+  }
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (email.trim() && password.trim()) {
+      if (isRegisterMode) {
+        showPopup("Signed Successfully!");
+      } else {
+        showPopup("You've Successfully Logged In");
+      }
+      form.reset();
+    } else {
+      alert("Please fill in both email and password.");
+    }
+  });
+
+  forgetPasswordLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    passwordInput.value = "";
+    showPopup("Your new password is: @manish123");
+  });
+
+  closeBtn.addEventListener("click", hidePopup);
+  window.addEventListener("click", (event) => {
+    if (event.target === popup) hidePopup();
+  });
+
+  registerLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    loginButton.textContent = "Sign In";
+    isRegisterMode = true;
+  });
+});
+</script>
+
+</body>
+</html> 
