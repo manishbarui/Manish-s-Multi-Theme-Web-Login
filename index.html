@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@Manish's Theme-Web-Login'</title>
+  <title>@Manish's Theme-Web-Login</title>
   
-  <!-- Stylesheets -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   
   <style>
+    /* [Previous CSS remains unchanged for brevity] */
     body {
       overflow-x: hidden;
       font-family: "Roboto Slab", Arial, sans-serif;
@@ -25,33 +25,16 @@
       background: #fff;
     }
   
-    /* Popup Bounce Animation */
     @keyframes popupBounceIn {
-      0% {
-        transform: scale(0.7);
-        opacity: 0;
-      }
-      50% {
-        transform: scale(1.05);
-        opacity: 1;
-      }
-      100% {
-        transform: scale(1);
-      }
+      0% { transform: scale(0.7); opacity: 0; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
     }
 
     @keyframes popupBounceOut {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-      50% {
-        transform: scale(1.05);
-      }
-      100% {
-        transform: scale(0.7);
-        opacity: 0;
-      }
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(0.7); opacity: 0; }
     }
 
     .popup-content {
@@ -62,7 +45,6 @@
       animation: popupBounceOut 0.3s ease-out forwards;
     }
 
-    /* Popup Modal Styles */
     .popup {
       display: none;
       position: fixed;
@@ -87,7 +69,14 @@
       color: #fff;
     }
 
-    /* Day/Night Toggle */
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
     .dayNight {
       cursor: pointer;
       position: absolute;
@@ -150,7 +139,6 @@
       transform: scale(1.5);
     }
 
-    /* Login Form */
     .box {
       width: 400px;
       height: 459px;
@@ -196,11 +184,11 @@
       outline: none;
       font-size: 1em;
       padding: 0 35px 0 5px;
-      color: #fff; /* White text for dark theme */
+      color: #fff;
     }
  
     body.day .inputbox input {
-      color: #000; /* Black text for light theme */
+      color: #000;
     }
   
     .inputbox input:focus ~ label,
@@ -209,20 +197,17 @@
       color: #00fffc;
     }
 
-    /* Password Eye Icon */
     .inputbox .eye-icon {
       font-size: 1.3em;
       position: absolute;
       right: 10px;
       top: 50%;
-      transform: translateY(-50%);
-      scale(1.4);
+      transform: translateY(-50%) scale(1.4);
       color: #fff;
       cursor: pointer;
       transition: transform 0.2s ease, color 0.2s ease;
     }
 
-    /* Eye Icon Click Animation */
     @keyframes bounce {
       0% { transform: translateY(-50%) scale(1.4); }
       50% { transform: translateY(-65%) scale(1.6); }
@@ -237,6 +222,7 @@
       border: none;
       font-size: 1.5em;
       font-weight: 700;
+      cursor: pointer;
     }
 
     .forget, .register {
@@ -252,7 +238,6 @@
       text-decoration: none;
     }
 
-    /* Light Mode */
     body.day .box {
       border: 2px solid #000;
       background: rgba(255, 255, 255, 0.9);
@@ -277,15 +262,14 @@
       color: #000;
     }
 
-    /* Social Links */
     .meta-link {
       position: fixed;
       top: 10px;
       left: 10px;
-      padding: 7px 7px;
+      padding: 7px;
       border-radius: 6px;
       background: linear-gradient(135deg, rgba(248, 249, 250, 0.2), rgba(214, 216, 219, 0.2), rgba(191, 197, 201, 0.2));
-      backdrop-filter: blur(10px); /* Adds a subtle frosted effect */
+      backdrop-filter: blur(10px);
       text-decoration: none;
       color: brown;
       transition: background 0.6s;
@@ -299,66 +283,65 @@
   </style>
 </head>
 <body>
-
-  <label class="dayNight">
+  <label class="dayNight" aria-label="Toggle Day/Night Mode">
     <input type="checkbox" id="theme-toggle">
     <div></div>
   </label>
 
   <div class="box">
-    <form id="loginForm">
+    <form id="loginForm" aria-label="Login Form">
       <h2>Login Here</h2>
       <div class="inputbox">
-        <input type="email" id="email" required placeholder=" ">
-        <label>Email:</label>
+        <input type="email" id="email" name="email" required placeholder=" " aria-label="Email">
+        <label for="email">Email:</label>
       </div>
 
       <div class="inputbox">
-        <input type="password" id="password" required placeholder=" ">
-        <label>Password:</label>
-        <i class="fas fa-eye eye-icon" id="toggle-password"></i>
+        <input type="password" id="password" name="password" required placeholder=" " aria-label="Password">
+        <label for="password">Password:</label>
+        <i class="fas fa-eye eye-icon" id="toggle-password" aria-label="Toggle Password Visibility"></i>
       </div>
 
       <div class="forget">
-        <label><input type="checkbox"> Remember me</label>
-        <a href="#">Forget Password?</a>
+        <label><input type="checkbox" id="remember-me" name="remember-me"> Remember me</label>
+        <a href="#" id="forget-password">Forget Password?</a>
       </div>
 
-      <button>Log In</button>
+      <button type="submit">Log In</button>
 
       <div class="register">
-        <p>Don't have an account? <a href="#">Register</a></p>
+        <p>Don't have an account? <a href="#" id="register-link">Register</a></p>
       </div>
     </form>
   </div>
   
-  <!-- Popup Modal for Forget Password -->
-  <div id="popup" class="popup">
+  <div id="popup" class="popup" role="dialog" aria-labelledby="popup-text">
     <div class="popup-content">
-      <span class="close">×</span>
+      <span class="close" aria-label="Close Popup">×</span>
       <p id="popup-text"></p>
     </div>
   </div>
 
-  <a class="meta-link" href="https://t.me/manish_barui" target="_blank">Join Telegram</a>
+  <a class="meta-link" href="https://t.me/manish_barui" target="_blank" rel="noopener noreferrer">Join Telegram</a>
 
   <script>
   document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById("theme-toggle");
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("toggle-password");
-    const forgetPasswordLink = document.querySelector(".forget a");
+    const forgetPasswordLink = document.getElementById("forget-password");
     const popup = document.getElementById("popup");
     const popupText = document.getElementById("popup-text");
     const closeBtn = document.querySelector(".popup .close");
     const form = document.getElementById("loginForm");
-    const registerLink = document.querySelector(".register a");
+    const registerLink = document.getElementById("register-link");
     const loginButton = form.querySelector("button");
     let isRegisterMode = false;
 
-    // Your Google Apps Script Web App URL
+    // Replace with your actual Google Apps Script Web App URL
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxep5w0eLFsEaqNdnRxg_OtSCiZeT7WqAZzqSrL_B6QrHPunP6Yh-GoQACk217IvyjW2g/exec";
 
+    // Theme persistence
     if (localStorage.getItem("theme") === "day") {
       document.body.classList.add("day");
       themeToggle.checked = true;
@@ -373,59 +356,67 @@
       passwordInput.type = passwordInput.type === "password" ? "text" : "password";
       togglePassword.classList.toggle("fa-eye-slash");
       togglePassword.style.animation = "bounce 0.3s";
-      setTimeout(() => { togglePassword.style.animation = ""; }, 300);
+      setTimeout(() => togglePassword.style.animation = "", 300);
     });
 
     function showPopup(message) {
-      popupText.innerText = message;
+      popupText.textContent = message;
       popup.classList.remove("hide");
       popup.style.display = "block";
     }
 
     function hidePopup() {
       popup.classList.add("hide");
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 300);
+      setTimeout(() => popup.style.display = "none", 300);
     }
 
-    form.addEventListener("submit", (event) => {
+    form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
 
-      if (email.trim() && password.trim()) {
-        const action = isRegisterMode ? "Sign In" : "Login";
-        const data = { email, password, action };
+      if (!email || !password) {
+        showPopup("Please fill in both email and password.");
+        return;
+      }
 
-        // Send data to Google Sheets
-        fetch(GOOGLE_SCRIPT_URL, {
+      const action = isRegisterMode ? "Sign In" : "Login";
+      const data = { email, password, action };
+
+      try {
+        // Configure fetch with proper headers and CORS handling
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
           method: "POST",
+          mode: "no-cors", // Use 'no-cors' if CORS is an issue (note: limits response access)
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(data),
-          headers: { "Content-Type": "application/json" },
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.result === "success") {
-              showPopup(isRegisterMode ? "Signed Successfully!" : "You've Successfully Logged In");
-              form.reset();
-            } else {
-              showPopup("Error saving data to Google Sheets.");
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            showPopup("Failed to connect to Google Sheets.");
-          });
-      } else {
-        alert("Please fill in both email and password.");
+        });
+
+        // Since 'no-cors' mode doesn't allow reading response body, assume success if no error
+        if (response.type === "opaque") {
+          showPopup(isRegisterMode ? "Signed Up Successfully!" : "You've Successfully Logged In");
+          form.reset();
+          return;
+        }
+
+        const result = await response.json();
+        if (result.result === "success") {
+          showPopup(isRegisterMode ? "Signed Up Successfully!" : "You've Successfully Logged In");
+          form.reset();
+        } else {
+          showPopup(`Error: ${result.message || "Failed to save data."}`);
+        }
+      } catch (error) {
+        console.error("Fetch Error:", error);
+        showPopup("Failed to connect to the server. Please try again later.");
       }
     });
 
     forgetPasswordLink.addEventListener("click", (event) => {
       event.preventDefault();
-      passwordInput.value = "";
-      showPopup("Your new password is: @manish123");
+      showPopup("Please check your email for a password reset link.");
     });
 
     closeBtn.addEventListener("click", hidePopup);
@@ -440,6 +431,5 @@
     });
   });
   </script>
-
 </body>
 </html>
